@@ -48,7 +48,25 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body:
+      // This is how we would use the BlocListener, but there is an easier way to do it
+      // With the BlocConsumer -> Combines BlocBuilder and BlocListener in one
+//      BlocListener<CounterCubit, CounterState>(
+//        listener: (context, state) {
+//          if (state.wasIncremented == true) {
+//            Scaffold.of(context).showSnackBar(const SnackBar(
+//              content: Text('Incremented'),
+//              duration: Duration(milliseconds: 300),
+//            ));
+//          } else if (state.wasIncremented == false) {
+//            Scaffold.of(context).showSnackBar(const SnackBar(
+//              content: Text('Decremented'),
+//              duration: Duration(milliseconds: 300),
+//            ));
+//          }
+//        },
+//        child:
+      Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -57,11 +75,44 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             // We wrap it in here because is the UI that we wants to change when states is changed
             // Wrapping the whole screen would be a bad practice because we would be rebuilding the whole screen for just one number
-            BlocBuilder<CounterCubit, CounterState>(
+            BlocConsumer<CounterCubit, CounterState>(
+              listener: (context, state) {
+                if (state.wasIncremented == true) {
+                  Scaffold.of(context).showSnackBar(const SnackBar(
+                    content: Text('Incremented'),
+                    duration: Duration(milliseconds: 300),
+                  ));
+                } else if (state.wasIncremented == false) {
+                  Scaffold.of(context).showSnackBar(const SnackBar(
+                    content: Text('Decremented'),
+                    duration: Duration(milliseconds: 300),
+                  ));
+                }
+              },
               builder: (context, state) {
+                if (state.counterValue < 0) {
+                  return Text(
+                    'Negative value' + state.counterValue.toString(),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headline4,
+                  );
+                } else if (state.counterValue % 2 == 0) {
+                  return Text(
+                    'Value is even' + state.counterValue.toString(),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headline4,
+                  );
+                }
                 return Text(
                   state.counterValue.toString(),
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline4,
                 );
               },
             ),
@@ -78,7 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     // We pressed the button, for that, we need the BlocBuilder!
                     // The BlocBuilder is a widget that helps re-building the UI based on the bloc State Changes
 
-                    BlocProvider.of<CounterCubit>(context).decrement;
+                    BlocProvider
+                        .of<CounterCubit>(context)
+                        .decrement;
                   },
                   tooltip: 'Decrement',
                   child: Icon(Icons.remove),
@@ -95,11 +148,17 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+    )
+    ,
+    floatingActionButton: FloatingActionButton(
+    onPressed: _incrementCounter,
+    tooltip: 'Increment',
+    child: const Icon(Icons.
+    add
+    )
+    ,
+    )
+    ,
     );
   }
 }
