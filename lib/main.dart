@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
+  final CounterState counterState1 = CounterState(counterValue: 1);
+  final CounterState counterState2 = CounterState(counterValue: 2);
   runApp(const MyApp());
 }
 
@@ -148,17 +150,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-    )
-    ,
-    floatingActionButton: FloatingActionButton(
-    onPressed: _incrementCounter,
-    tooltip: 'Increment',
-    child: const Icon(Icons.
-    add
-    )
-    ,
-    )
-    ,
     );
   }
 }
