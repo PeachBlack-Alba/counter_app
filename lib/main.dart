@@ -13,39 +13,33 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-  final CounterCubit _counterCubit = CounterCubit();
+
+
+  final AppRouter _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    // Wrapping the MaterialApp inside a BlocProvider or MultiBlocProvider will provide all the blocs
+    // And cubits GLOBALLY to all screens
+    // And because we are doing that, we dont need a Stateful widget anymore
+    return BlocProvider<CounterCubit>(
+      create: (context) => CounterCubit(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        // We need to pass the function as an argument and not as a result of it
+        onGenerateRoute: _appRouter.onGenerateRoute,
+
       ),
-      routes: {
-        '/': (context) => BlocProvider.value(
-              value: (context) => _counterCubit,
-              child: HomeScreen(
-                title: 'Home Scren',
-                color: Colors.blueAccent,
-              ),
-            ),
-        '/second': (context) => BlocProvider.value(
-              value: (context) => _counterCubit,
-              child: SecondScreen(
-                title: 'Second Screen',
-                color: Colors.orangeAccent,
-              ),
-            ),
-        '/third': (context) => BlocProvider.value(
-              value: (context) => _counterCubit,
-              child: ThirdScreen(
-                title: 'Third Screen',
-                color: Colors.greenAccent,
-              ),
-            ),
-      },
     );
+  }
+
+  @override
+  void dispose() {
+    // Close the CounterCubit
+    _appRouter.dispose();
+    super.dispose();
   }
 }
