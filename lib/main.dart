@@ -1,37 +1,63 @@
-import 'package:counter_app/presentation/screens/home_screen.dart';
-import 'package:counter_app/presentation/screens/second_screen.dart';
-import 'package:counter_app/presentation/screens/third_screen.dart';
+import 'package:counter_app/presentation/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'logic/cubit/counter_cubit.dart';
+import 'logic/cubit/internet_cubit.dart';
 
 void main() {
-  final CounterState counterState1 = CounterState(counterValue: 1);
-  final CounterState counterState2 = CounterState(counterValue: 2);
-  runApp(const MyApp());
+  runApp(MyApp(
+    appRouter: AppRouter(),
+    connectivity: Connectivity(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
 
 
-  final AppRouter _appRouter = AppRouter();
+  final AppRouter appRouter;
+  final Connectivity connectivity;
+
+  const MyApp({
+    Key key,
+    @required this.appRouter,
+    @required this.connectivity,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // Wrapping the MaterialApp inside a BlocProvider or MultiBlocProvider will provide all the blocs
     // And cubits GLOBALLY to all screens
     // And because we are doing that, we dont need a Stateful widget anymore
-    return BlocProvider<CounterCubit>(
-      create: (context) => CounterCubit(),
+//    return BlocProvider<CounterCubit>(
+//      create: (context) => CounterCubit(),
+//      child: MaterialApp(
+//        title: 'Flutter Demo',
+//        theme: ThemeData(
+//          primarySwatch: Colors.blue,
+//        ),
+//        // We need to pass the function as an argument and not as a result of it
+//        onGenerateRoute: appRouter.onGenerateRoute,
+//
+//      ),
+//    );
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<InternetCubit>(
+          create: (context) => InternetCubit(connectivity: connectivity),
+        ),
+        BlocProvider<CounterCubit>(
+          create: (context) => CounterCubit(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        // We need to pass the function as an argument and not as a result of it
-        onGenerateRoute: _appRouter.onGenerateRoute,
-
+        onGenerateRoute: appRouter.onGenerateRoute,
       ),
     );
   }
@@ -39,7 +65,7 @@ class MyApp extends StatelessWidget {
   @override
   void dispose() {
     // Close the CounterCubit
-    _appRouter.dispose();
+    appRouter.dispose();
     super.dispose();
   }
 }
