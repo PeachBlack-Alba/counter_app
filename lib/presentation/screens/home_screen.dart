@@ -111,32 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 },
               ),
-              // SizedBox(
-              //   height: 24,
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //   children: [
-              //     FloatingActionButton(
-              //       heroTag: Text('${widget.title}'),
-              //       onPressed: () {
-              //         BlocProvider.of<CounterCubit>(context).decrement();
-              //         // context.bloc<CounterCubit>().decrement();
-              //       },
-              //       tooltip: 'Decrement',
-              //       child: Icon(Icons.remove),
-              //     ),
-              //     FloatingActionButton(
-              //       heroTag: Text('${widget.title} 2nd'),
-              //       onPressed: () {
-              //         // BlocProvider.of<CounterCubit>(context).increment();
-              //         context.bloc<CounterCubit>().increment();
-              //       },
-              //       tooltip: 'Increment',
-              //       child: Icon(Icons.add),
-              //     ),
-              //   ],
-              // ),
+
               const SizedBox(
                 height: 24,
               ),
