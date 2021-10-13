@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext homeScreenContext) {
     return BlocListener<InternetCubit, InternetState>(
       listener: (context, state) {
         if (state is InternetConnected &&
@@ -115,17 +115,25 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 24,
               ),
-              MaterialButton(
-                color: Colors.redAccent,
-                child: const Text(
-                  'Go to Second Screen',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    '/second',
+              Builder(
+                // Wrapping the widget in a builder so we can specify which
+                // context has to look to, since the MaterialButton context is anonymous
+                // and therefore is not accessible
+                // The look for the context is bottom-up relationship
+                builder: (materialButtonContext) {
+                  return MaterialButton(
+                    color: Colors.redAccent,
+                    child: const Text(
+                      'Go to Second Screen',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.of(materialButtonContext).pushNamed(
+                        '/second',
+                      );
+                    },
                   );
-                },
+                }
               ),
               SizedBox(
                 height: 24,
@@ -137,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(
+                  Navigator.of(homeScreenContext).pushNamed(
                     '/third',
                   );
                 },
