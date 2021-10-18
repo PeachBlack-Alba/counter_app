@@ -101,8 +101,52 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
             ),
+            Builder(
+              builder: (context) {
+                final counterState = context.watch<CounterCubit>().state;
+                final internetState = context.watch<InternetCubit>().state;
 
+                if (internetState is InternetConnected &&
+                    internetState.connectionType == ConnectionType.Mobile) {
+                  return Text(
+                    'Counter: ' +
+                        counterState.counterValue.toString() +
+                        ' Internet: Mobile',
+                    style: Theme.of(context).textTheme.headline6,
+                  );
+                } else if (internetState is InternetConnected &&
+                    internetState.connectionType == ConnectionType.Wifi) {
+                  return Text(
+                    'Counter: ' +
+                        counterState.counterValue.toString() +
+                        ' Internet: Wifi',
+                    style: Theme.of(context).textTheme.headline6,
+                  );
+                } else {
+                  return Text(
+                    'Counter: ' +
+                        counterState.counterValue.toString() +
+                        ' Internet: Disconnected',
+                    style: Theme.of(context).textTheme.headline6,
+                  );
+                }
+              },
+            ),
             const SizedBox(
+              height: 24,
+            ),
+            /// Context.select();
+            Builder(
+              builder: (context) {
+                final counterValue = context
+                    .select((CounterCubit cubit) => cubit.state.counterValue);
+                return Text(
+                  'Counter: ' + counterValue.toString(),
+                  style: Theme.of(context).textTheme.headline6,
+                );
+              },
+            ),
+            SizedBox(
               height: 24,
             ),
             Row(
