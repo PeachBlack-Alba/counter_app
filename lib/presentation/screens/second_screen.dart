@@ -29,25 +29,7 @@ class _SecondScreenState extends State<SecondScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body:
-      // This is how we would use the BlocListener, but there is an easier way to do it
-      // With the BlocConsumer -> Combines BlocBuilder and BlocListener in one
-//      BlocListener<CounterCubit, CounterState>(
-//        listener: (context, state) {
-//          if (state.wasIncremented == true) {
-//            Scaffold.of(context).showSnackBar(const SnackBar(
-//              content: Text('Incremented'),
-//              duration: Duration(milliseconds: 300),
-//            ));
-//          } else if (state.wasIncremented == false) {
-//            Scaffold.of(context).showSnackBar(const SnackBar(
-//              content: Text('Decremented'),
-//              duration: Duration(milliseconds: 300),
-//            ));
-//          }
-//        },
-//        child:
-      Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
